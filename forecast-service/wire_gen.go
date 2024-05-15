@@ -6,10 +6,17 @@
 
 package main
 
+import (
+	"forecast-service/service"
+	"forecast-service/service/config"
+)
+
 // Injectors from wire.go:
 
-func InitializeService() *MyService {
-	repository := NewRepository()
-	myService := NewMyService(repository)
-	return myService
+func InitializeService() service.ForecastService {
+	configConfig := config.LoadConfig()
+	citiesHandler := service.NewCitiesHandler(configConfig)
+	forecastsHandler := service.NewForecastsHandler()
+	forecastService := service.NewForecastService(configConfig, citiesHandler, forecastsHandler)
+	return forecastService
 }
