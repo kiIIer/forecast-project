@@ -8,6 +8,7 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideRouterStore } from '@ngrx/router-store';
 import { reducers } from './store';
+import { provideAuth0 } from '@auth0/auth0-angular';
 
 export const appConfig: ApplicationConfig = {
   providers: [
