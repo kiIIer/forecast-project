@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Inject, inject, PLATFORM_ID } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatButtonToggle } from '@angular/material/button-toggle';
 import { MatButton } from '@angular/material/button';
 import { AuthService } from '@auth0/auth0-angular';
+import { of } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
+
 
 @Component({
   standalone: true,
@@ -14,6 +17,13 @@ import { AuthService } from '@auth0/auth0-angular';
 export class AppComponent {
   title = 'forecast-spa';
 
-  constructor(public auth: AuthService) {
+  auth: AuthService | null = null;
+
+  constructor(@Inject(PLATFORM_ID) private platformId: NonNullable<unknown>) {
+    if (isPlatformBrowser(this.platformId)) {
+      // Conditionally inject AuthService only on the client side
+      this.auth = inject(AuthService);
+    }
   }
 }
+
