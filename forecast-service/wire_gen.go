@@ -9,14 +9,21 @@ package main
 import (
 	"forecast-service/service"
 	"forecast-service/service/config"
+	"forecast-service/service/repository"
+	"forecast-service/service/repository/middleware"
 )
 
 // Injectors from wire.go:
 
 func InitializeService() service.ForecastService {
 	configConfig := config.LoadConfig()
-	citiesHandler := service.NewCitiesHandler(configConfig)
-	forecastsHandler := service.NewForecastsHandler()
-	forecastService := service.NewForecastService(configConfig, citiesHandler, forecastsHandler)
+	db := repository.NewGormDB(configConfig)
+	cityRepository := repository.NewCityRepository(db)
+	userRepository := repository.NewUserRepository(db)
+	forecastRepository := repository.NewForecastRepository(db)
+	citiesHandler := service.NewCitiesHandler(cityRepository, userRepository, forecastRepository)
+	forecastsHandler := service.NewForecastsHandler(forecastRepository, userRepository)
+	middlewareMiddleware := middleware.NewMiddleware(configConfig, userRepository)
+	forecastService := service.NewForecastService(configConfig, citiesHandler, forecastsHandler, middlewareMiddleware)
 	return forecastService
 }
