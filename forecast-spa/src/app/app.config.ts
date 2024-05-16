@@ -6,14 +6,17 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { provideRouterStore } from '@ngrx/router-store';
+import { reducers } from './reducers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideEffects(),
-    provideStore(),
-    provideStoreDevtools(),
-    provideClientHydration(),
     provideRouter(appRoutes),
-    provideAnimationsAsync(),
-  ],
+    provideEffects(),
+    provideStore(reducers),
+    provideStoreDevtools(),
+    provideRouterStore(),
+    provideClientHydration(),
+    provideAnimationsAsync()
+  ]
 };
