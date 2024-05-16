@@ -5,11 +5,13 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideEffects(),
     provideStore(),
+    provideStoreDevtools(),
     provideClientHydration(),
     provideRouter(appRoutes),
     provideAnimationsAsync(),
