@@ -2,6 +2,8 @@ package service
 
 import (
 	"forecast-service/service/config"
+	"forecast-service/service/repository/middleware"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
@@ -11,31 +13,48 @@ type ForecastService interface {
 	Run()
 }
 
-// forecastServiceImpl implements ForecastService with its dependencies.
-type forecastServiceImpl struct {
+// forecastService implements ForecastService with its dependencies.
+type forecastService struct {
 	config           *config.Config
 	citiesHandler    *CitiesHandler
 	forecastsHandler *ForecastsHandler
+	middleware       middleware.Middleware
 }
 
-func NewForecastService(cfg *config.Config, citiesHandler *CitiesHandler, forecastsHandler *ForecastsHandler) ForecastService {
-	return &forecastServiceImpl{
+func NewForecastService(cfg *config.Config, citiesHandler *CitiesHandler, forecastsHandler *ForecastsHandler, middleware middleware.Middleware) ForecastService {
+	return &forecastService{
 		config:           cfg,
 		citiesHandler:    citiesHandler,
 		forecastsHandler: forecastsHandler,
+		middleware:       middleware,
 	}
 }
 
-func (fs *forecastServiceImpl) Run() {
-	log.Println("Using database at:", fs.config.DatabaseURI)
+func (fs *forecastService) Run() {
+	router := mux.NewRouter()
 
-	// Setup routes
-	http.HandleFunc("/cities", fs.citiesHandler.GetCities)
-	http.HandleFunc("/forecasts", fs.forecastsHandler.GetForecasts)
+	// Public routes
+	router.HandleFunc("/cities", fs.citiesHandler.CitiesGet).Methods(http.MethodGet)
+	router.HandleFunc("/cities/{id}", fs.citiesHandler.CitiesIdGet).Methods(http.MethodGet)
+	router.HandleFunc("/cities/{id}/forecasts", fs.citiesHandler.CitiesIdForecastsGet).Methods(http.MethodGet)
+	router.HandleFunc("/forecasts", fs.forecastsHandler.ForecastsGet).Methods(http.MethodGet)
+	router.HandleFunc("/forecasts/{id}", fs.forecastsHandler.ForecastsIdGet).Methods(http.MethodGet)
 
-	// Start HTTP server
-	log.Println("Starting server on :8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		log.Fatal("Error starting server: ", err)
+	// Protected routes (Require Authentication)
+	router.Handle("/cities/favourites", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.citiesHandler.FavouritesGet))).Methods(http.MethodGet)
+	router.Handle("/cities/favourites", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.citiesHandler.FavouritesPost))).Methods(http.MethodPost)
+	router.Handle("/cities/favourites/{id}", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.citiesHandler.FavouritesIdDelete))).Methods(http.MethodDelete)
+	router.Handle("/forecasts/upcoming", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.forecastsHandler.UpcomingForecastsGet))).Methods(http.MethodGet)
+
+	// Admin routes (Require Admin Authorization)
+	//router.Handle("/cities", fs.middleware.CheckAuthenticated(fs.middleware.CheckAdmin(http.HandlerFunc(fs.citiesHandler.CitiesPost)))).Methods(http.MethodPost)
+	router.Handle("/cities", http.HandlerFunc(fs.citiesHandler.CitiesPost)).Methods(http.MethodPost)
+	router.Handle("/cities/{id}", fs.middleware.CheckAuthenticated(fs.middleware.CheckAdmin(http.HandlerFunc(fs.citiesHandler.CitiesIdDelete)))).Methods(http.MethodDelete)
+	router.Handle("/forecasts", fs.middleware.CheckAuthenticated(fs.middleware.CheckAdmin(http.HandlerFunc(fs.forecastsHandler.ForecastsPost)))).Methods(http.MethodPost)
+	router.Handle("/forecasts/{id}", fs.middleware.CheckAuthenticated(fs.middleware.CheckAdmin(http.HandlerFunc(fs.forecastsHandler.ForecastsIdDelete)))).Methods(http.MethodDelete)
+
+	log.Println("Server starting on :8080")
+	if err := http.ListenAndServe(":8080", router); err != nil {
+		log.Fatalf("Failed to start server: %v", err)
 	}
 }

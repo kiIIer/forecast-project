@@ -1,25 +1,16 @@
 openapi: 3.0.0
 info:
   title: Forecast Service
-  description: "API for managing cities, forecasts, and user favourites in a forecast\
+  description:
+    "API for managing cities, forecasts, and user favourites in a forecast\
     \ service."
   version: 1.0.0
 servers:
-- url: https://virtserver.swaggerhub.com/kiIIer/ForecastService/1.0.0
-  description: SwaggerHub API Auto Mocking
-- url: https://api.forecastservice.com/v1
+  - url: http://localhost:8080
 paths:
   /cities:
     get:
-      summary: Search city by name
-      parameters:
-      - name: name
-        in: query
-        required: true
-        style: form
-        explode: true
-        schema:
-          type: string
+      summary: Get all cities
       responses:
         "200":
           description: A list of cities
@@ -28,7 +19,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/City'
+                  $ref: "#/components/schemas/City"
                 x-content-type: application/json
     post:
       summary: Create a new city
@@ -36,7 +27,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/cities_body'
+              $ref: "#/components/schemas/cities_body"
         required: true
       responses:
         "201":
@@ -44,43 +35,64 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/City'
+                $ref: "#/components/schemas/City"
         "401":
           description: Unauthorized
         "403":
           description: Forbidden
       security:
-      - bearerAuth: []
+        - bearerAuth: []
+  /cities/search:
+    get:
+      summary: Search for cities by name
+      parameters:
+        - name: name
+          in: query
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of cities
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/City"
+                x-content-type: application/json
   /cities/{id}:
     get:
       summary: Get city by ID
       parameters:
-      - name: id
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
       responses:
         "200":
           description: City found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/City'
+                $ref: "#/components/schemas/City"
         "404":
           description: City not found
     delete:
       summary: Delete city by ID
       parameters:
-      - name: id
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
       responses:
         "204":
           description: City deleted
@@ -91,18 +103,18 @@ paths:
         "404":
           description: City not found
       security:
-      - bearerAuth: []
+        - bearerAuth: []
   /cities/{id}/forecasts:
     get:
       summary: Get forecasts for city by ID
       parameters:
-      - name: id
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
       responses:
         "200":
           description: A list of forecasts
@@ -111,7 +123,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Forecast'
+                  $ref: "#/components/schemas/Forecast"
                 x-content-type: application/json
         "404":
           description: City not found
@@ -126,7 +138,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Forecast'
+                  $ref: "#/components/schemas/Forecast"
                 x-content-type: application/json
     post:
       summary: Create a new forecast
@@ -134,7 +146,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Forecast'
+              $ref: "#/components/schemas/Forecast"
         required: true
       responses:
         "201":
@@ -142,43 +154,43 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Forecast'
+                $ref: "#/components/schemas/Forecast"
         "401":
           description: Unauthorized
         "403":
           description: Forbidden
       security:
-      - bearerAuth: []
+        - bearerAuth: []
   /forecasts/{id}:
     get:
       summary: Get forecast by ID
       parameters:
-      - name: id
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
       responses:
         "200":
           description: Forecast found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Forecast'
+                $ref: "#/components/schemas/Forecast"
         "404":
           description: Forecast not found
     delete:
       summary: Delete forecast by ID
       parameters:
-      - name: id
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
       responses:
         "204":
           description: Forecast deleted
@@ -189,7 +201,7 @@ paths:
         "404":
           description: Forecast not found
       security:
-      - bearerAuth: []
+        - bearerAuth: []
   /favourites:
     get:
       summary: Get user favourites
@@ -201,19 +213,19 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/City'
+                  $ref: "#/components/schemas/City"
                 x-content-type: application/json
         "401":
           description: Unauthorized
       security:
-      - bearerAuth: []
+        - bearerAuth: []
     post:
       summary: Add city to user favourites
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/favourites_body'
+              $ref: "#/components/schemas/favourites_body"
         required: true
       responses:
         "201":
@@ -221,22 +233,22 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/City'
+                $ref: "#/components/schemas/City"
         "401":
           description: Unauthorized
       security:
-      - bearerAuth: []
+        - bearerAuth: []
   /favourites/{id}:
     delete:
       summary: Remove city from user favourites
       parameters:
-      - name: id
-        in: path
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: integer
+        - name: id
+          in: path
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: integer
       responses:
         "204":
           description: City removed from user favourites
@@ -245,7 +257,7 @@ paths:
         "404":
           description: City not found in user favourites
       security:
-      - bearerAuth: []
+        - bearerAuth: []
   /upcoming-forecasts:
     get:
       summary: Get upcoming forecasts for user favourites
@@ -257,12 +269,12 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Forecast'
+                  $ref: "#/components/schemas/Forecast"
                 x-content-type: application/json
         "401":
           description: Unauthorized
       security:
-      - bearerAuth: []
+        - bearerAuth: []
 components:
   schemas:
     City:
