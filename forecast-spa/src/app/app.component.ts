@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 import { MatButtonToggle } from '@angular/material/button-toggle';
 import { MatButton } from '@angular/material/button';
 import { AuthService } from '@auth0/auth0-angular';
-import { of } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 
 
