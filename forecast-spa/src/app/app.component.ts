@@ -1,5 +1,5 @@
 import { Component, Inject, inject, PLATFORM_ID } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatButtonToggle } from '@angular/material/button-toggle';
 import { MatButton } from '@angular/material/button';
 import { AuthService } from '@auth0/auth0-angular';
@@ -34,7 +34,8 @@ export class AppComponent {
   constructor(@Inject(PLATFORM_ID) private platformId: NonNullable<unknown>,
               public cityService: CityService,
               protected store: Store,
-              public popUpService: PopUpService) {
+              public popUpService: PopUpService,
+              public router: Router) {
     if (isPlatformBrowser(this.platformId)) {
       // Conditionally inject AuthService only on the client side
       this.auth = inject(AuthService);
