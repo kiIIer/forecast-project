@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Notification } from '../store/notification/notification.model';
 import { City } from '../store/city/city.model';
+import { Favourite } from '../store/favourite/favourite.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,15 +18,15 @@ export class UserService {
     return this.http.get<Notification[]>(`${this.endpoint}/upcoming-forecasts`);
   }
 
-  loadFavorites(): Observable<City[]> {
-    return this.http.get<City[]>(`${this.endpoint}/favorites`);
+  loadFavourites(): Observable<Favourite[]> {
+    return this.http.get<Favourite[]>(`${this.endpoint}/favorites`);
   }
 
-  postFavorite(city: City): Observable<City> {
-    return this.http.post<City>(`${this.endpoint}/favorites`, city);
+  postFavorite(favourite: Favourite): Observable<Favourite> {
+    return this.http.post<Favourite>(`${this.endpoint}/favorites`, favourite);
   }
 
-  deleteFavorite(id: string): Observable<City> {
-    return this.http.delete<City>(`${this.endpoint}/favorites/${id}`);
+  deleteFavorite(id: string): Observable<Favourite> {
+    return this.http.delete<Favourite>(`${this.endpoint}/favorites/${id}`);
   }
 }

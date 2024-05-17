@@ -17,10 +17,11 @@ import { CityEffects } from './city/city.effects';
 import { ForecastEffects } from './forecast/forecast.effects';
 import { NotificationEffects } from './notification/notification.effects';
 import { favouriteReducer, FavouriteState } from './favourite/favourite.reducer';
+import { FavouriteEffects } from './favourite/favourite.effects';
 
 export const appStateFeatureKey = 'appState';
 
-export const effects = [AuthEffects, CityEffects, ForecastEffects, NotificationEffects];
+export const effects = [AuthEffects, CityEffects, ForecastEffects, NotificationEffects, FavouriteEffects];
 
 export interface State {
   router: RouterState;
