@@ -23,7 +23,7 @@ export class CityEffects {
   postCity$ = createEffect(() => this.actions$.pipe(
     ofType(CityActions.startAddCity),
     switchMap(({ city }) => this.cityService.postCity(city).pipe(
-      map(() => CityActions.addCity({ city })),
+      map((savedCity) => CityActions.addCity({ city: savedCity })),
       catchError(() => {
         this.popUpService.openDialog('Error', 'Failed to add city', 'error');
         return of(CityActions.addCity({ city }));

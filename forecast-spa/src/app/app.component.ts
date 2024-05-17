@@ -69,5 +69,6 @@ export class AppComponent {
 
   protected readonly CityActions = CityActions;
   forecasts$: Observable<Forecast[]> | undefined;
+  protected readonly ForecastActions = ForecastActions;
 }
 

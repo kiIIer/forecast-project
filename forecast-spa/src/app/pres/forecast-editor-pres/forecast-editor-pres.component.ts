@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,6 +25,7 @@ import { Forecast } from '../../store/forecast/forecast.model';
 })
 export class ForecastEditorPresComponent implements OnInit {
   @Input() forecast: Forecast | null = null;
+  @Output() submitted = new EventEmitter<Forecast>();
 
   forecastForm!: FormGroup;
 
@@ -56,7 +57,7 @@ export class ForecastEditorPresComponent implements OnInit {
         dateOfForecast: formattedDate
       };
       console.log(forecastData);
-      // Handle the form submission, e.g., pass the data to a parent component or service
+      this.submitted.emit(forecastData);
     }
   }
 }

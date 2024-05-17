@@ -23,7 +23,7 @@ export class ForecastEffects {
   postForecast$ = createEffect(() => this.actions$.pipe(
     ofType(ForecastActions.startAddForecast),
     switchMap(({ forecast }) => this.forecastService.postForecast(forecast).pipe(
-      map(() => ForecastActions.addForecast({ forecast })),
+      map((savedForecast) => ForecastActions.addForecast({ forecast: savedForecast })),
       catchError(() => {
         this.popUpService.openDialog('Error', 'Failed to add forecast', 'error');
         return of(ForecastActions.addForecast({ forecast }));
