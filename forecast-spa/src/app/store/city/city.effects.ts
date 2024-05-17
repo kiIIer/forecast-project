@@ -20,6 +20,28 @@ export class CityEffects {
     ))
   ));
 
+  postCity$ = createEffect(() => this.actions$.pipe(
+    ofType(CityActions.startAddCity),
+    switchMap(({ city }) => this.cityService.postCity(city).pipe(
+      map(() => CityActions.addCity({ city })),
+      catchError(() => {
+        this.popUpService.openDialog('Error', 'Failed to add city', 'error');
+        return of(CityActions.addCity({ city }));
+      })
+    ))
+  ));
+
+  deleteCity$ = createEffect(() => this.actions$.pipe(
+    ofType(CityActions.startDeleteCity),
+    switchMap(({ id }) => this.cityService.deleteCity(id).pipe(
+      map(() => CityActions.deleteCity({ id })),
+      catchError(() => {
+        this.popUpService.openDialog('Error', 'Failed to delete city', 'error');
+        return of(CityActions.deleteCity({ id }));
+      })
+    ))
+  ));
+
 
   constructor(private actions$: Actions, private cityService: CityService, private popUpService: PopUpService) {
   }

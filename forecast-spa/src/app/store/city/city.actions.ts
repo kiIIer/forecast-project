@@ -8,14 +8,16 @@ export const CityActions = createActionGroup({
   events: {
     'Start Load Citys': emptyProps(),
     'Load Citys': props<{ citys: City[] }>(),
+    'Start Add City': props<{ city: City }>(),
     'Add City': props<{ city: City }>(),
     'Upsert City': props<{ city: City }>(),
     'Add Citys': props<{ citys: City[] }>(),
     'Upsert Citys': props<{ citys: City[] }>(),
     'Update City': props<{ city: Update<City> }>(),
     'Update Citys': props<{ citys: Update<City>[] }>(),
+    'Start Delete City': props<{ id: string }>(),
     'Delete City': props<{ id: string }>(),
     'Delete Citys': props<{ ids: string[] }>(),
-    'Clear Citys': emptyProps(),
+    'Clear Citys': emptyProps()
   }
 });
