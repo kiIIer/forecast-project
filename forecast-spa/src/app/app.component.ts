@@ -15,11 +15,12 @@ import { CityActions } from './store/city/city.actions';
 import { PopUpComponent } from './pop-up/pop-up.component';
 import { PopUpService } from './services/pop-up.service';
 import { selectAll, selectTotal } from './store/city/city.reducer';
+import { CitiesPresComponent } from './pres/cities-pres/cities-pres.component';
 
 
 @Component({
   standalone: true,
-  imports: [RouterModule, MatButtonToggle, MatButton, AsyncPipe, MatLine, MatListItem, MatList, NgForOf, JsonPipe, NgIf, PopUpComponent],
+  imports: [RouterModule, MatButtonToggle, MatButton, AsyncPipe, MatLine, MatListItem, MatList, NgForOf, JsonPipe, NgIf, PopUpComponent, CitiesPresComponent],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

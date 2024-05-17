@@ -2,5 +2,4 @@
 <button mat-button (click)="this.auth?.logout()">Log out</button>
 <button mat-button (click)="this.store.dispatch(CityActions.startLoadCitys())">Load cities</button>
 
-{{ this.cities$ | async | json }}
-
+<app-cities-pres></app-cities-pres>
