@@ -1,14 +1,6 @@
 <button mat-button (click)="this.auth?.loginWithRedirect()">Log in</button>
 <button mat-button (click)="this.auth?.logout()">Log out</button>
-<button mat-button (click)="this.cities$ = this.cityService.loadCities()">Load cities</button>
+<button mat-button (click)="this.store.dispatch(CityActions.startLoadCitys())">Load cities</button>
 
-<mat-list>
-  <mat-list-item *ngFor="let city of cities$ | async">
-    <h3 mat-line>{{ city | json }}</h3>
-  </mat-list-item>
-</mat-list>
-
-<button mat-button (click)="this.postCity$ = this.cityService.deleteCity('1')">Delete the bitch</button>
-
-<h3 *ngIf="postCity$ | async as postCity">{{ postCity | json }}</h3>
+{{ this.cities$ | async | json }}
 

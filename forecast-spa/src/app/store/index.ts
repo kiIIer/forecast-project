@@ -13,23 +13,24 @@ import { forecastReducer, ForecastState } from './forecast/forecast.reducer';
 import { notificationReducer, notificationsFeature, NotificationState } from './notification/notification.reducer';
 import { AuthEffects } from './auth/auth.effects';
 import { authReducer, AuthState } from './auth/auth.reducer';
+import { CityEffects } from './city/city.effects';
 
 export const appStateFeatureKey = 'appState';
 
-export const effects = [AuthEffects];
+export const effects = [AuthEffects, CityEffects]
 
 export interface State {
   router: RouterState;
-  city: CityState;
-  forecast: ForecastState;
+  cities: CityState;
+  forecasts: ForecastState;
   notification: NotificationState;
   auth: AuthState;
 }
 
 export const reducers: ActionReducerMap<State> = {
   router: routerReducer,
-  city: cityReducer,
-  forecast: forecastReducer,
+  cities: cityReducer,
+  forecasts: forecastReducer,
   notification: notificationReducer,
   auth: authReducer
 };

@@ -6,7 +6,7 @@ import (
 
 // Forecast represents a weather forecast in the database.
 type Forecast struct {
-	ID uint `gorm:"primaryKey"`
+	ID uint `gorm:"primaryKey" json:"id"`
 	gorm.Model
 	CityId         uint
 	DateOfForecast string

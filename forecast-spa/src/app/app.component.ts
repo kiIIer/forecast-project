@@ -14,6 +14,7 @@ import { Store } from '@ngrx/store';
 import { CityActions } from './store/city/city.actions';
 import { PopUpComponent } from './pop-up/pop-up.component';
 import { PopUpService } from './services/pop-up.service';
+import { selectAll, selectTotal } from './store/city/city.reducer';
 
 
 @Component({
@@ -25,17 +26,13 @@ import { PopUpService } from './services/pop-up.service';
 })
 export class AppComponent {
   title = 'forecast-spa';
-  testCity = {
-    name: 'Test City 3'
-  } as City;
 
   auth: AuthService | null = null;
-  cities$: Observable<City[]> | null = null;
-  postCity$: Observable<City> | null = null;
+  cities$: Observable<City[]> | undefined;
 
   constructor(@Inject(PLATFORM_ID) private platformId: NonNullable<unknown>,
               public cityService: CityService,
-              private store: Store,
+              protected store: Store,
               public popUpService: PopUpService) {
     if (isPlatformBrowser(this.platformId)) {
       // Conditionally inject AuthService only on the client side
@@ -44,8 +41,11 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.popUpService.openDialog('Title', 'Content', 'warning');
     this.store.dispatch(AuthActions.checkAuth());
+    this.cities$ = this.store.select(selectAll);
   }
+
+  protected readonly CityActions = CityActions;
+  protected readonly selectTotal = selectTotal;
 }
 
