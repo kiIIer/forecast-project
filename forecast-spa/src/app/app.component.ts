@@ -14,13 +14,17 @@ import { Store } from '@ngrx/store';
 import { CityActions } from './store/city/city.actions';
 import { PopUpComponent } from './pop-up/pop-up.component';
 import { PopUpService } from './services/pop-up.service';
-import { selectAll, selectTotal } from './store/city/city.reducer';
+import { selectAll as CitySelectAll, selectTotal } from './store/city/city.reducer';
 import { CitiesPresComponent } from './pres/cities-pres/cities-pres.component';
+import { ForecastActions } from './store/forecast/forecast.actions';
+import { ForecastsPresComponent } from './pres/forecasts-pres/forecasts-pres.component';
+import { Forecast } from './store/forecast/forecast.model';
+import { selectAll } from './store/forecast/forecast.reducer';
 
 
 @Component({
   standalone: true,
-  imports: [RouterModule, MatButtonToggle, MatButton, AsyncPipe, MatLine, MatListItem, MatList, NgForOf, JsonPipe, NgIf, PopUpComponent, CitiesPresComponent],
+  imports: [RouterModule, MatButtonToggle, MatButton, AsyncPipe, MatLine, MatListItem, MatList, NgForOf, JsonPipe, NgIf, PopUpComponent, CitiesPresComponent, ForecastsPresComponent],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -44,10 +48,25 @@ export class AppComponent {
 
   ngOnInit() {
     this.store.dispatch(AuthActions.checkAuth());
-    this.cities$ = this.store.select(selectAll);
+    this.cities$ = this.store.select(CitySelectAll);
+    this.forecasts$ = this.store.select(selectAll);
+  }
+
+  test() {
+    // this.store.dispatch(ForecastActions.startAddForecast({
+    //   forecast: {
+    //     id: 0,
+    //     cityId: 2,
+    //     dateOfForecast: '2021-01-01',
+    //     temperature: 20,
+    //     chanceOfRain: 0.5
+    //   }
+    // }));
+
+    this.store.dispatch(ForecastActions.startLoadForecasts());
   }
 
   protected readonly CityActions = CityActions;
-  protected readonly selectTotal = selectTotal;
+  forecasts$: Observable<Forecast[]> | undefined;
 }
 
