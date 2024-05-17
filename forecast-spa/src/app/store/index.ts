@@ -15,16 +15,17 @@ import { AuthEffects } from './auth/auth.effects';
 import { authReducer, AuthState } from './auth/auth.reducer';
 import { CityEffects } from './city/city.effects';
 import { ForecastEffects } from './forecast/forecast.effects';
+import { NotificationEffects } from './notification/notification.effects';
 
 export const appStateFeatureKey = 'appState';
 
-export const effects = [AuthEffects, CityEffects, ForecastEffects];
+export const effects = [AuthEffects, CityEffects, ForecastEffects, NotificationEffects];
 
 export interface State {
   router: RouterState;
   cities: CityState;
   forecasts: ForecastState;
-  notification: NotificationState;
+  notifications: NotificationState;
   auth: AuthState;
 }
 
@@ -32,7 +33,7 @@ export const reducers: ActionReducerMap<State> = {
   router: routerReducer,
   cities: cityReducer,
   forecasts: forecastReducer,
-  notification: notificationReducer,
+  notifications: notificationReducer,
   auth: authReducer
 };
 
