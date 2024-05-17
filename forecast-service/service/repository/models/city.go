@@ -8,6 +8,6 @@ import (
 type City struct {
 	ID uint `gorm:"primaryKey" json:"id"`
 	gorm.Model
-	Name      string     `gorm:"unique;not null"`
-	Forecasts []Forecast `gorm:"foreignKey:CityId"`
+	Name      string     `gorm:"unique;not null" json:"name"`
+	Forecasts []Forecast `gorm:"foreignKey:CityId" json:"forecasts"`
 }

@@ -8,8 +8,8 @@ import (
 type Forecast struct {
 	ID uint `gorm:"primaryKey" json:"id"`
 	gorm.Model
-	CityId         uint
-	DateOfForecast string
-	ChanceOfRain   float32
-	Temperature    float32
+	CityId         uint    `json:"cityId"`
+	DateOfForecast string  `json:"dateOfForecast"`
+	ChanceOfRain   float32 `json:"chanceOfRain"`
+	Temperature    float32 `json:"temperature"`
 }
