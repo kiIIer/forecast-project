@@ -9,9 +9,10 @@ import { Observable } from 'rxjs';
 export class ForecastService {
   endpoint = 'http://localhost:8080';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
-  loadForecasts(cityId: string): Observable<Forecast[]> {
+  loadForecasts(): Observable<Forecast[]> {
     return this.http.get<Forecast[]>(`${this.endpoint}/forecasts`);
   }
 
