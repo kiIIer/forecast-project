@@ -16,6 +16,7 @@ import { authReducer, AuthState } from './auth/auth.reducer';
 import { CityEffects } from './city/city.effects';
 import { ForecastEffects } from './forecast/forecast.effects';
 import { NotificationEffects } from './notification/notification.effects';
+import { favouriteReducer, FavouriteState } from './favourite/favourite.reducer';
 
 export const appStateFeatureKey = 'appState';
 
@@ -27,6 +28,7 @@ export interface State {
   forecasts: ForecastState;
   notifications: NotificationState;
   auth: AuthState;
+  favourites: FavouriteState;
 }
 
 export const reducers: ActionReducerMap<State> = {
@@ -34,7 +36,8 @@ export const reducers: ActionReducerMap<State> = {
   cities: cityReducer,
   forecasts: forecastReducer,
   notifications: notificationReducer,
-  auth: authReducer
+  auth: authReducer,
+  favourites: favouriteReducer
 };
 
 
