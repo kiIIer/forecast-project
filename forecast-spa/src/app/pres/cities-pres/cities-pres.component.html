@@ -1,11 +1,16 @@
 <div class="card-container">
   <mat-card>
     <mat-card-title>
-      {{this.title}}
+      {{ title }}
     </mat-card-title>
     <mat-card-content>
-      <div *ngFor="let city of cities">
-        <button mat-button (click)="onClick(city)">{{ city.name }}</button>
+      <div *ngFor="let city of cities" class="city-item">
+        <button mat-button (click)="clicked.emit(city)" class="city-name-button">
+          {{ city.name }}
+        </button>
+        <button mat-icon-button (click)="toggleFavourite.emit(city)">
+          <mat-icon>{{ isFavourite(city) ? 'favorite' : 'favorite_border' }}</mat-icon>
+        </button>
       </div>
     </mat-card-content>
   </mat-card>
