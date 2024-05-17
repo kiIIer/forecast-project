@@ -7,14 +7,15 @@ import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideRouterStore } from '@ngrx/router-store';
-import { reducers } from './store';
+import { effects, reducers } from './store';
 import { authHttpInterceptorFn, provideAuth0 } from '@auth0/auth0-angular';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { AuthEffects } from './store/auth/auth.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(appRoutes),
-    provideEffects(),
+    provideEffects(effects),
     provideStore(reducers),
     provideStoreDevtools(),
     provideHttpClient(withInterceptors([authHttpInterceptorFn])),

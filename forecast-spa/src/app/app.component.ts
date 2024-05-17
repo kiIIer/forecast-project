@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 import { City } from './store/city/city.model';
 import { MatLine } from '@angular/material/core';
 import { MatList, MatListItem } from '@angular/material/list';
+import { AuthActions } from './store/auth/auth.actions';
+import { Store } from '@ngrx/store';
 
 
 @Component({
@@ -28,11 +30,15 @@ export class AppComponent {
   cities$: Observable<City[]> | null = null;
   postCity$: Observable<City> | null = null;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: NonNullable<unknown>, public cityService: CityService) {
+  constructor(@Inject(PLATFORM_ID) private platformId: NonNullable<unknown>, public cityService: CityService, private store: Store) {
     if (isPlatformBrowser(this.platformId)) {
       // Conditionally inject AuthService only on the client side
       this.auth = inject(AuthService);
     }
+  }
+
+  ngOnInit() {
+    this.store.dispatch(AuthActions.checkAuth());
   }
 }
 

@@ -11,8 +11,11 @@ import { routerReducer } from '@ngrx/router-store';
 import { cityReducer, CityState } from './city/city.reducer';
 import { forecastReducer, ForecastState } from './forecast/forecast.reducer';
 import { notificationReducer, notificationsFeature, NotificationState } from './notification/notification.reducer';
+import { AuthEffects } from './auth/auth.effects';
 
 export const appStateFeatureKey = 'appState';
+
+export const effects = [AuthEffects];
 
 export interface State {
   router: RouterState;
