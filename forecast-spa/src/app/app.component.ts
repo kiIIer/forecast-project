@@ -11,11 +11,14 @@ import { MatLine } from '@angular/material/core';
 import { MatList, MatListItem } from '@angular/material/list';
 import { AuthActions } from './store/auth/auth.actions';
 import { Store } from '@ngrx/store';
+import { CityActions } from './store/city/city.actions';
+import { PopUpComponent } from './pop-up/pop-up.component';
+import { PopUpService } from './services/pop-up.service';
 
 
 @Component({
   standalone: true,
-  imports: [RouterModule, MatButtonToggle, MatButton, AsyncPipe, MatLine, MatListItem, MatList, NgForOf, JsonPipe, NgIf],
+  imports: [RouterModule, MatButtonToggle, MatButton, AsyncPipe, MatLine, MatListItem, MatList, NgForOf, JsonPipe, NgIf, PopUpComponent],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
@@ -30,7 +33,10 @@ export class AppComponent {
   cities$: Observable<City[]> | null = null;
   postCity$: Observable<City> | null = null;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: NonNullable<unknown>, public cityService: CityService, private store: Store) {
+  constructor(@Inject(PLATFORM_ID) private platformId: NonNullable<unknown>,
+              public cityService: CityService,
+              private store: Store,
+              public popUpService: PopUpService) {
     if (isPlatformBrowser(this.platformId)) {
       // Conditionally inject AuthService only on the client side
       this.auth = inject(AuthService);
@@ -38,6 +44,7 @@ export class AppComponent {
   }
 
   ngOnInit() {
+    this.popUpService.openDialog('Title', 'Content', 'warning');
     this.store.dispatch(AuthActions.checkAuth());
   }
 }

@@ -11,3 +11,4 @@
 <button mat-button (click)="this.postCity$ = this.cityService.deleteCity('1')">Delete the bitch</button>
 
 <h3 *ngIf="postCity$ | async as postCity">{{ postCity | json }}</h3>
+

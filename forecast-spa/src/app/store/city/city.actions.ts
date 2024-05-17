@@ -6,6 +6,7 @@ import { City } from './city.model';
 export const CityActions = createActionGroup({
   source: 'City/API',
   events: {
+    'Start Load Citys': emptyProps(),
     'Load Citys': props<{ citys: City[] }>(),
     'Add City': props<{ city: City }>(),
     'Upsert City': props<{ city: City }>(),
