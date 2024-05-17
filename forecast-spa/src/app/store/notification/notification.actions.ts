@@ -6,6 +6,7 @@ import { Notification } from './notification.model';
 export const NotificationActions = createActionGroup({
   source: 'Notification/API',
   events: {
+    'Start Load Notifications': emptyProps(),
     'Load Notifications': props<{ notifications: Notification[] }>(),
     'Add Notification': props<{ notification: Notification }>(),
     'Upsert Notification': props<{ notification: Notification }>(),
@@ -15,6 +16,6 @@ export const NotificationActions = createActionGroup({
     'Update Notifications': props<{ notifications: Update<Notification>[] }>(),
     'Delete Notification': props<{ id: string }>(),
     'Delete Notifications': props<{ ids: string[] }>(),
-    'Clear Notifications': emptyProps(),
+    'Clear Notifications': emptyProps()
   }
 });
