@@ -1,0 +1,21 @@
+<div class="card-container" *ngIf="forecast && city">
+  <mat-card>
+    <mat-card-title>
+      Forecast Details
+    </mat-card-title>
+    <mat-card-content>
+      <div class="detail-item">
+        <strong>City:</strong> {{ city.name }}
+      </div>
+      <div class="detail-item">
+        <strong>Date:</strong> {{ formatDate(forecast.dateOfForecast) }}
+      </div>
+      <div class="detail-item">
+        <strong>Temperature:</strong> {{ forecast.temperature }}°C
+      </div>
+      <div class="detail-item">
+        <strong>Chance of Rain:</strong> {{ forecast.chanceOfRain }}%
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
