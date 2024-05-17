@@ -9,6 +9,7 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideRouterStore } from '@ngrx/router-store';
 import { reducers } from './store';
 import { provideAuth0 } from '@auth0/auth0-angular';
+import { provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,6 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideEffects(),
     provideStore(reducers),
     provideStoreDevtools(),
+    provideHttpClient(),
     provideRouterStore(),
     provideClientHydration(),
     provideAnimationsAsync()

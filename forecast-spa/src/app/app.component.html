@@ -1,0 +1,11 @@
+<button mat-button (click)="this.cities$ = this.cityService.loadCities()">Load cities</button>
+
+<mat-list>
+  <mat-list-item *ngFor="let city of cities$ | async">
+    <h3 mat-line>{{ city | json }}</h3>
+  </mat-list-item>
+</mat-list>
+
+<button mat-button (click)="this.postCity$ = this.cityService.postCity(this.testCity)">Post city</button>
+
+<h3 *ngIf="postCity$ | async as postCity">{{ postCity | json }}</h3>
