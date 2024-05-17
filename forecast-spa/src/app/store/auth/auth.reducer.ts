@@ -15,7 +15,7 @@ export const initialState: AuthState = {
   isAdmin: false
 };
 
-export const reducer = createReducer(
+export const authReducer = createReducer(
   initialState,
   on(AuthActions.loginComplete, (state, { user, isLoggedIn, isAdmin }) => ({
     ...state,
