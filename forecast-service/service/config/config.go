@@ -8,6 +8,8 @@ import (
 
 // Config stores all configuration of the application.
 type Config struct {
+	Authority  string
+	Audience   string
 	DBHost     string `mapstructure:"db_host"`     // Database host
 	DBPort     string `mapstructure:"db_port"`     // Database port
 	DBUser     string `mapstructure:"db_user"`     // Database user
@@ -54,6 +56,8 @@ func LoadConfig() *Config {
 	}
 
 	// Override with environment variables if they are set
+	cfg.Authority = "https://forecast-project.eu.auth0.com/"
+	cfg.Audience = "http://localhost:8080"
 	cfg.DBHost = viper.GetString("db_host")
 	cfg.DBPort = viper.GetString("db_port")
 	cfg.DBUser = viper.GetString("db_user")

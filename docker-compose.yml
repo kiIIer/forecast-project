@@ -16,7 +16,6 @@ services:
       - DB_PASSWORD=mysecretpassword
       - DB_NAME=forecastdb
       - SSL_MODE=disable
-      - JWT_SECRET=your_jwt_secret
 
   postgres:
     image: postgres:13

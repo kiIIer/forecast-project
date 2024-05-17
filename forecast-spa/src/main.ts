@@ -11,7 +11,21 @@ const superConfig = {
       domain: 'forecast-project.eu.auth0.com',
       clientId: 'PUZtYAMIV0G5qyFGXNz1AmZJ2BnCe6rC',
       authorizationParams: {
-        redirect_uri: window.location.origin
+        redirect_uri: window.location.origin,
+        audience: 'http://localhost:8080'
+      },
+      httpInterceptor: {
+        allowedList: [
+          {
+            // Match any request that starts 'https://{yourDomain}/api/v2/' (note the asterisk)
+            uri: 'http://localhost:8080/*',
+            tokenOptions: {
+              authorizationParams: {
+                audience: 'http://localhost:8080'
+              }
+            }
+          }
+        ]
       }
     })
   ]

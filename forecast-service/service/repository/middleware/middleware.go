@@ -2,14 +2,19 @@ package middleware
 
 import (
 	"context"
+	"crypto/rsa"
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"forecast-service/service/config"
 	"forecast-service/service/repository"
 	"forecast-service/service/repository/models"
 	"github.com/dgrijalva/jwt-go"
 	"gorm.io/gorm"
+	"math/big"
 	"net/http"
 	"strings"
+	"sync"
 )
 
 type Middleware interface {
@@ -20,10 +25,13 @@ type Middleware interface {
 type middleware struct {
 	config   *config.Config
 	userRepo repository.UserRepository
+	jwks     *JWKS
 }
 
 func NewMiddleware(cfg *config.Config, userRepo repository.UserRepository) Middleware {
-	return &middleware{config: cfg, userRepo: userRepo}
+	jwks := &JWKS{}
+	jwks.FetchKeys(cfg.Authority + ".well-known/jwks.json")
+	return &middleware{config: cfg, userRepo: userRepo, jwks: jwks}
 }
 
 type ContextKey string
@@ -32,6 +40,70 @@ const (
 	UserIDKey ContextKey = "userID"
 	AdminKey  ContextKey = "isAdmin"
 )
+
+type JWKS struct {
+	Keys []JSONWebKey `json:"keys"`
+	mu   sync.RWMutex
+}
+
+type JSONWebKey struct {
+	Kid string `json:"kid"`
+	Kty string `json:"kty"`
+	Use string `json:"use"`
+	N   string `json:"n"`
+	E   string `json:"e"`
+}
+
+func (j *JWKS) FetchKeys(url string) {
+	resp, err := http.Get(url)
+	if err != nil {
+		fmt.Printf("Error fetching JWKS: %v", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	if err := json.NewDecoder(resp.Body).Decode(j); err != nil {
+		fmt.Printf("Error decoding JWKS: %v", err)
+		return
+	}
+}
+
+func (j *JWKS) GetKey(kid string) (*JSONWebKey, error) {
+	j.mu.RLock()
+	defer j.mu.RUnlock()
+
+	for _, key := range j.Keys {
+		if key.Kid == kid {
+			return &key, nil
+		}
+	}
+
+	return nil, fmt.Errorf("unable to find key %s", kid)
+}
+
+func (j *JSONWebKey) DecodePublicKey() (*rsa.PublicKey, error) {
+	nBytes, err := base64.RawURLEncoding.DecodeString(j.N)
+	if err != nil {
+		return nil, err
+	}
+
+	eBytes, err := base64.RawURLEncoding.DecodeString(j.E)
+	if err != nil {
+		return nil, err
+	}
+
+	e := 0
+	for _, b := range eBytes {
+		e = e*256 + int(b)
+	}
+
+	pubKey := &rsa.PublicKey{
+		N: new(big.Int).SetBytes(nBytes),
+		E: e,
+	}
+
+	return pubKey, nil
+}
 
 func (m *middleware) CheckAuthenticated(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -49,10 +121,21 @@ func (m *middleware) CheckAuthenticated(next http.Handler) http.Handler {
 
 		tokenStr := authHeaderParts[1]
 		token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
-			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
 				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 			}
-			return []byte(m.config.JWTSecret), nil // Use the secret from the config
+
+			kid, ok := token.Header["kid"].(string)
+			if !ok {
+				return nil, fmt.Errorf("token header does not contain kid")
+			}
+
+			key, err := m.jwks.GetKey(kid)
+			if err != nil {
+				return nil, fmt.Errorf("failed to get key: %v", err)
+			}
+
+			return key.DecodePublicKey()
 		})
 
 		if err != nil {
@@ -61,8 +144,25 @@ func (m *middleware) CheckAuthenticated(next http.Handler) http.Handler {
 		}
 
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-			userID := claims["user_id"].(string) // Adjust according to your token's claims structure
-			isAdmin := claims["admin"].(bool)    // Check if the token has the admin claim
+			userID, ok := claims["sub"].(string) // Adjust according to your token's claims structure
+			if !ok {
+				http.Error(w, "Invalid token: missing user ID", http.StatusUnauthorized)
+				return
+			}
+
+			// Extract permissions from the token
+			permissions, ok := claims["permissions"].([]interface{})
+			if !ok {
+				permissions = []interface{}{}
+			}
+
+			isAdmin := false
+			for _, perm := range permissions {
+				if perm == "admin" {
+					isAdmin = true
+					break
+				}
+			}
 
 			// Check if the user exists in the database, if not add them
 			_, err := m.userRepo.GetUserByID(userID)
