@@ -11,6 +11,8 @@ import { favouritesGuard } from './guards/favouritesGuard';
 import { DeleteCityContComponent } from './cont/delete-city-cont/delete-city-cont.component';
 import { DeleteForecastContComponent } from './cont/delete-forecast-cont/delete-forecast-cont.component';
 import { adminGuard } from './guards/admin.guard';
+import { FavouritesContComponent } from './cont/favourites-cont/favourites-cont.component';
+import { authGuard } from './guards/auth.guard';
 
 export const appRoutes: Route[] = [
   {
@@ -22,6 +24,11 @@ export const appRoutes: Route[] = [
     path: 'forecasts',
     component: ForecastsContComponent,
     canActivate: [forecastsGuard]
+  },
+  {
+    path: 'favourites',
+    component: FavouritesContComponent,
+    canActivate: [authGuard, citiesGuard, favouritesGuard]
   },
   {
     path: 'cities/create',

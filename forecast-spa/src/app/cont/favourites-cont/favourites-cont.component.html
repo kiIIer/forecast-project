@@ -1,0 +1,8 @@
+<app-cities-pres [cities]="favourites$ | async"
+                 [title]="'Favourite Cities'"
+                 [favourites]="favourites$ | async"
+                 [isLoggedIn]="isLoggedIn$ | async"
+                 (cityChosen)="onCityChosen($event)"
+                 (addFavourite)="onAddFavourite($event)"
+                 (removeFavourite)="onRemoveFavourite($event)"
+></app-cities-pres>

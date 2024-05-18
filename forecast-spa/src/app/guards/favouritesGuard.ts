@@ -20,7 +20,6 @@ export const favouritesGuard: CanActivateFn = (route: ActivatedRouteSnapshot, st
 
   const checkStore = (): Observable<boolean> => {
     store.dispatch(FavouriteActions.startLoadFavourites());
-    console.log('favouritesGuard');
     return store.select(selectAll).pipe(
       map(() => true),
       catchError(() => of(false))
