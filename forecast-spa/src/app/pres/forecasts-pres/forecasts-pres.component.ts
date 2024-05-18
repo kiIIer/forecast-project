@@ -17,8 +17,13 @@ import { Forecast } from '../../store/forecast/forecast.model';
 })
 export class ForecastsPresComponent {
   @Input({ transform: (value: Forecast[] | null): Forecast[] => value ? value : [] }) forecasts: Forecast[] = [];
-  @Input() title = 'Forecasts';
+  _title = 'Forecasts';
   @Output() public forecastChosen = new EventEmitter<Forecast>();
+
+  @Input()
+  set title(value: string | null) {
+    this._title = value ? value : 'Forecasts';
+  }
 
   get sortedForecasts(): Forecast[] {
     return this.forecasts.sort((a, b) => new Date(a.dateOfForecast).getTime() - new Date(b.dateOfForecast).getTime());
