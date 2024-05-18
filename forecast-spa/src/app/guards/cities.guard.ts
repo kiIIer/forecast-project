@@ -1,39 +1,28 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable, scheduled, asyncScheduler } from 'rxjs';
+import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
+import { inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { filter, map, switchMap, catchError, tap } from 'rxjs/operators';
-import { selectAll } from '../store/city/city.reducer';
+import { catchError, filter, map, Observable, of, scheduled, switchMap, tap } from 'rxjs';
 import { City } from '../store/city/city.model';
 import { CityActions } from '../store/city/city.actions';
+import { selectAll } from '../store/city/city.reducer';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class CitiesGuard implements CanActivate {
+export const citiesGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+  const store = inject(Store);
 
-  constructor(private store: Store) {
-  }
-
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.checkStore().pipe(
-      switchMap(() => scheduled<boolean>([true], asyncScheduler)),
-      catchError(() => scheduled<boolean>([false], asyncScheduler))
-    );
-  }
-
-  private checkStore(): Observable<boolean> {
-    return this.store.select(selectAll).pipe(
+  const checkStore = (): Observable<boolean> => {
+    return store.select(selectAll).pipe(
       tap((cities: City[]) => {
         if (cities.length === 0) {
-          this.store.dispatch(CityActions.startLoadCitys());
+          store.dispatch(CityActions.startLoadCitys());
         }
       }),
       filter((cities: City[]) => cities.length !== 0),
       map(() => true)
     );
-  }
-}
+  };
+
+  return checkStore().pipe(
+    map(() => true),
+    catchError(() => of(false))
+  );
+};

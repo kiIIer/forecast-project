@@ -1,11 +1,11 @@
 import { Route } from '@angular/router';
 import { CitiesPresComponent } from './pres/cities-pres/cities-pres.component';
-import { CitiesGuard } from './guards/cities.guard';
+import { citiesGuard } from './guards/cities.guard';
 
 export const appRoutes: Route[] = [
   {
-    path: '/home',
+    path: 'home',
     component: CitiesPresComponent,
-    canActivate: [CitiesGuard]
+    canActivate: [citiesGuard]
   }
 ];
