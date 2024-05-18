@@ -5,7 +5,7 @@
     </mat-card-title>
     <mat-card-content>
       <div *ngFor="let forecast of sortedForecasts">
-        <button mat-button (click)="this.clicked.emit(forecast)">{{ forecast.dateOfForecast }}</button>
+        <button mat-button (click)="this.onForecastChosen(forecast)">{{ forecast.dateOfForecast }}</button>
       </div>
     </mat-card-content>
   </mat-card>
