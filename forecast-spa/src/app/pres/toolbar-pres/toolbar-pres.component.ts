@@ -1,4 +1,4 @@
-import { booleanAttribute, Component, Input } from '@angular/core';
+import { booleanAttribute, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { City } from '../../store/city/city.model';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
@@ -43,6 +43,16 @@ export class ToolbarPresComponent {
   @Input({ transform: booleanAttribute }) isAdmin = false;
   @Input() user: any = null;
 
+  @Output() cityChosen = new EventEmitter<City>();
+  @Output() favouritesClicked = new EventEmitter<void>();
+  @Output() loginClicked = new EventEmitter<void>();
+  @Output() logoutClicked = new EventEmitter<void>();
+  @Output() adminCreateCity = new EventEmitter<void>();
+  @Output() adminDeleteCity = new EventEmitter<void>();
+  @Output() adminCreateForecast = new EventEmitter<void>();
+  @Output() adminDeleteForecast = new EventEmitter<void>();
+
+
   myControl = new FormControl<string | City>('');
   filteredCities!: Observable<City[]>;
 
@@ -66,5 +76,37 @@ export class ToolbarPresComponent {
   private _filter(name: string): City[] {
     const filterValue = name.toLowerCase();
     return this.cities.filter(city => city.name.toLowerCase().includes(filterValue));
+  }
+
+  onCitySelected(city: City): void {
+    this.cityChosen.emit(city);
+  }
+
+  onFavouritesClicked(): void {
+    this.favouritesClicked.emit();
+  }
+
+  onLoginClicked(): void {
+    this.loginClicked.emit();
+  }
+
+  onLogoutClicked(): void {
+    this.logoutClicked.emit();
+  }
+
+  onAdminCreateCity(): void {
+    this.adminCreateCity.emit();
+  }
+
+  onAdminDeleteCity(): void {
+    this.adminDeleteCity.emit();
+  }
+
+  onAdminCreateForecast(): void {
+    this.adminCreateForecast.emit();
+  }
+
+  onAdminDeleteForecast(): void {
+    this.adminDeleteForecast.emit();
   }
 }

@@ -1,4 +1,12 @@
 <app-toolbar-pres [isAdmin]="isAdmin$ | async"
                   [isLoggedIn]="isLogged$ | async"
                   [user]="user$ | async"
-[cities]="cities$ | async"></app-toolbar-pres>
+                  [cities]="cities$ | async"
+                  (cityChosen)="onCityChosen($event)"
+                  (favouritesClicked)="onFavouritesClicked()"
+                  (loginClicked)="onLoginClicked()"
+                  (logoutClicked)="onLogoutClicked()"
+                  (adminCreateCity)="onAdminCreateCity()"
+                  (adminDeleteCity)="onAdminDeleteCity()"
+                  (adminCreateForecast)="onAdminCreateForecast()"
+                  (adminDeleteForecast)="onAdminDeleteForecast()"></app-toolbar-pres>
