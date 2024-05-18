@@ -25,11 +25,12 @@ import { ForecastDetailsPresComponent } from './pres/forecast-details-pres/forec
 import { ToolbarPresComponent } from './pres/toolbar-pres/toolbar-pres.component';
 import { ToolbarContComponent } from './cont/toolbar-cont/toolbar-cont.component';
 import { HomeContComponent } from './cont/home-cont/home-cont.component';
+import { NewForecastContComponent } from './cont/new-forecast-cont/new-forecast-cont.component';
 
 
 @Component({
   standalone: true,
-  imports: [RouterModule, MatButtonToggle, MatButton, AsyncPipe, MatLine, MatListItem, MatList, NgForOf, JsonPipe, NgIf, PopUpComponent, CitiesPresComponent, ForecastsPresComponent, ForecastEditorPresComponent, ForecastDetailsPresComponent, ToolbarPresComponent, ToolbarContComponent, HomeContComponent],
+  imports: [RouterModule, MatButtonToggle, MatButton, AsyncPipe, MatLine, MatListItem, MatList, NgForOf, JsonPipe, NgIf, PopUpComponent, CitiesPresComponent, ForecastsPresComponent, ForecastEditorPresComponent, ForecastDetailsPresComponent, ToolbarPresComponent, ToolbarContComponent, HomeContComponent, NewForecastContComponent],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

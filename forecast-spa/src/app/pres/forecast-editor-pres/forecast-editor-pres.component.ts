@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { DateAdapter, MatNativeDateModule } from '@angular/material/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Forecast } from '../../store/forecast/forecast.model';
 
@@ -29,7 +29,8 @@ export class ForecastEditorPresComponent implements OnInit {
 
   forecastForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private adapter: DateAdapter<any>) {
+    this.adapter.setLocale('en-GB'); // Set the locale to 'en-GB' for dd/MM/yyyy format
   }
 
   ngOnInit(): void {

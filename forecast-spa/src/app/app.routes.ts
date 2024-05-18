@@ -5,6 +5,7 @@ import { ForecastsContComponent } from './cont/forecasts-cont/forecasts-cont.com
 import { forecastsGuard } from './guards/forecasts.guard';
 import { CityDetailsComponent } from './cont/city-details/city-details.component';
 import { ForecastDetailsContComponent } from './cont/forecast-details-cont/forecast-details-cont.component';
+import { NewForecastContComponent } from './cont/new-forecast-cont/new-forecast-cont.component';
 
 export const appRoutes: Route[] = [
   {
@@ -21,6 +22,10 @@ export const appRoutes: Route[] = [
     path: 'cities/:city_id',
     component: CityDetailsComponent,
     canActivate: [citiesGuard, forecastsGuard]
+  },
+  {
+    path: 'forecasts/create',
+    component: NewForecastContComponent
   },
   {
     path: 'forecasts/:forecast_id',
