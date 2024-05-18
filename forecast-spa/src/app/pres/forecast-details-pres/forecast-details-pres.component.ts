@@ -17,21 +17,18 @@ import { NgIf } from '@angular/common';
   styleUrl: './forecast-details-pres.component.css'
 })
 export class ForecastDetailsPresComponent {
-  // @Input() forecast: Forecast | null = null;
-  // @Input() city: City | null = null;
-  forecast: Forecast = {
-    id: 1,
-    cityId: 1,
-    dateOfForecast: '2021-01-01',
-    temperature: 20,
-    chanceOfRain: 20
-  };
+  public _forecast: Forecast | null = null;
 
-  city: City = {
-    id: 1,
-    name: 'City Name'
-  };
+  @Input()
+  set forecast(value: Forecast | undefined | null) {
+    this._forecast = value ? value : null;
+  }
+  public _city: City | null = null;
 
+  @Input()
+  set city(value: City | undefined | null) {
+    this._city = value ? value : null;
+  }
   formatDate(date: string): string {
     const d = new Date(date);
     const day = String(d.getDate()).padStart(2, '0');
