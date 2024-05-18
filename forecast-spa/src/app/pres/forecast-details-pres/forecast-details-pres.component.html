@@ -2,6 +2,9 @@
   <mat-card>
     <mat-card-title>
       Forecast Details
+      <button *ngIf="isAdmin" mat-icon-button color="primary" (click)="onEdit()">
+        <mat-icon>edit</mat-icon>
+      </button>
     </mat-card-title>
     <mat-card-content>
       <div class="detail-item">

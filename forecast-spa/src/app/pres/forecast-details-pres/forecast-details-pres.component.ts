@@ -1,8 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { booleanAttribute, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Forecast } from '../../store/forecast/forecast.model';
 import { City } from '../../store/city/city.model';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { NgIf } from '@angular/common';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-forecast-details-pres',
@@ -11,7 +13,9 @@ import { NgIf } from '@angular/common';
     MatCardContent,
     MatCardTitle,
     MatCard,
-    NgIf
+    NgIf,
+    MatIconButton,
+    MatIcon
   ],
   templateUrl: './forecast-details-pres.component.html',
   styleUrl: './forecast-details-pres.component.css'
@@ -23,17 +27,29 @@ export class ForecastDetailsPresComponent {
   set forecast(value: Forecast | undefined | null) {
     this._forecast = value ? value : null;
   }
+
   public _city: City | null = null;
 
   @Input()
   set city(value: City | undefined | null) {
     this._city = value ? value : null;
   }
+
+  @Input({ transform: booleanAttribute }) isAdmin: boolean = false;
+
+  @Output() jumpToEdit = new EventEmitter<Forecast>();
+
   formatDate(date: string): string {
     const d = new Date(date);
     const day = String(d.getDate()).padStart(2, '0');
     const month = String(d.getMonth() + 1).padStart(2, '0');
     const year = d.getFullYear();
     return `${day}/${month}/${year}`;
+  }
+
+  onEdit(): void {
+    if (this._forecast) {
+      this.jumpToEdit.emit(this._forecast);
+    }
   }
 }

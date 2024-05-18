@@ -1,3 +1,5 @@
 <app-forecast-details-pres
-[forecast]="forecast$ | async"
-[city]="city$ | async"></app-forecast-details-pres>
+  [forecast]="forecast$ | async"
+  [city]="city$ | async"
+  [isAdmin]="isAdmin$ | async"
+  (jumpToEdit)="onJumpToEdit($event)"></app-forecast-details-pres>

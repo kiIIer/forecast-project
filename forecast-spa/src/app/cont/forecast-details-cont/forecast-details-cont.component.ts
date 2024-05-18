@@ -8,6 +8,8 @@ import { selectRouteParams } from '../../store/router/router.reducer';
 import { selectEntities as selectForecastEntities } from '../../store/forecast/forecast.reducer';
 import { selectEntities as selectCityEntities } from '../../store/city/city.reducer';
 import { AsyncPipe } from '@angular/common';
+import { selectIsAdmin } from '../../store/auth/auth.reducer';
+import { RouterActions } from '../../store/router/router.actions';
 
 @Component({
   selector: 'app-forecast-details-cont',
@@ -36,7 +38,13 @@ export class ForecastDetailsContComponent {
     })
   );
 
+  isAdmin$: Observable<boolean> = this.store.select(selectIsAdmin);
+
   constructor(private store: Store) {
+  }
+
+  onJumpToEdit(forecast: Forecast): void {
+    this.store.dispatch(RouterActions.navigateByUrl({ url: `/forecasts/${forecast.id}/edit` }));
   }
 
 }
