@@ -19,6 +19,37 @@ const superConfig = {
           {
             // Match any request that starts 'https://{yourDomain}/api/v2/' (note the asterisk)
             uri: 'http://localhost:8080/*',
+            httpMethod: 'POST',
+            tokenOptions: {
+              authorizationParams: {
+                audience: 'http://localhost:8080'
+              }
+            }
+          },
+          {
+            // Match any request that starts 'https://{yourDomain}/api/v2/' (note the asterisk)
+            uri: 'http://localhost:8080/*',
+            httpMethod: 'DELETE',
+            tokenOptions: {
+              authorizationParams: {
+                audience: 'http://localhost:8080'
+              }
+            }
+          },
+          {
+            // Match any request that starts 'https://{yourDomain}/api/v2/' (note the asterisk)
+            uri: 'http://localhost:8080/favourites',
+            httpMethod: 'GET',
+            tokenOptions: {
+              authorizationParams: {
+                audience: 'http://localhost:8080'
+              }
+            }
+          },
+          {
+            // Match any request that starts 'https://{yourDomain}/api/v2/' (note the asterisk)
+            uri: 'http://localhost:8080/upcoming-forecasts',
+            httpMethod: 'GET',
             tokenOptions: {
               authorizationParams: {
                 audience: 'http://localhost:8080'

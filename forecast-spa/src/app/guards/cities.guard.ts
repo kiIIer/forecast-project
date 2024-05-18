@@ -9,6 +9,7 @@ import { selectAll } from '../store/city/city.reducer';
 export const citiesGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
   const store = inject(Store);
 
+
   const checkStore = (): Observable<boolean> => {
     return store.select(selectAll).pipe(
       tap((cities: City[]) => {
@@ -22,7 +23,6 @@ export const citiesGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state:
   };
 
   return checkStore().pipe(
-    map(() => true),
     catchError(() => of(false))
   );
 };

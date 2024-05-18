@@ -5,16 +5,17 @@ import { selectAll as selectAllCities } from '../../store/city/city.reducer';
 import { selectIsAdmin, selectIsLoggedIn, selectUserProfile } from '../../store/auth/auth.reducer';
 import { AsyncPipe } from '@angular/common';
 import { City } from '../../store/city/city.model';
-import { routerRequestAction } from '@ngrx/router-store';
 import { RouterActions } from '../../store/router/router.actions';
 import { AuthActions } from '../../store/auth/auth.actions';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-toolbar-cont',
   standalone: true,
   imports: [
     ToolbarPresComponent,
-    AsyncPipe
+    AsyncPipe,
+    RouterOutlet
   ],
   templateUrl: './toolbar-cont.component.html',
   styleUrl: './toolbar-cont.component.css'
