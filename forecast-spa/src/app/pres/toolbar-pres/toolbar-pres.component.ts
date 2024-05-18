@@ -51,6 +51,7 @@ export class ToolbarPresComponent {
   @Output() adminDeleteCity = new EventEmitter<void>();
   @Output() adminCreateForecast = new EventEmitter<void>();
   @Output() adminDeleteForecast = new EventEmitter<void>();
+  @Output() homeClicked = new EventEmitter<void>();
 
 
   myControl = new FormControl<string | City>('');
@@ -108,5 +109,9 @@ export class ToolbarPresComponent {
 
   onAdminDeleteForecast(): void {
     this.adminDeleteForecast.emit();
+  }
+
+  onHomeClicked(): void {
+    this.homeClicked.emit();
   }
 }

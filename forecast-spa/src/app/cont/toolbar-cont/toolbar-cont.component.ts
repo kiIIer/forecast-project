@@ -60,4 +60,8 @@ export class ToolbarContComponent {
   onAdminDeleteForecast(): void {
     this.store.dispatch(RouterActions.navigateByUrl({ url: '/forecasts/delete' }));
   }
+
+  onHomeClicked(): void {
+    this.store.dispatch(RouterActions.navigateByUrl({ url: '/home' }));
+  }
 }
