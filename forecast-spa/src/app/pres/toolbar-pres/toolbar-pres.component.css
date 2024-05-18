@@ -11,3 +11,12 @@ mat-toolbar {
 .search-field {
     width: 300px;
 }
+
+mat-menu {
+    z-index: 1000; /* Ensure the menu is on top */
+}
+
+.mat-form-field {
+    position: relative;
+    z-index: 10;
+}

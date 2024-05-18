@@ -1,5 +1,5 @@
 <mat-toolbar color="primary">
-  <span>City Finder</span>
+  <span>Forecast project</span>
   <span class="spacer"></span>
   <mat-form-field class="search-field" appearance="fill">
     <mat-icon matPrefix>search</mat-icon>
@@ -11,9 +11,21 @@
     </mat-autocomplete>
   </mat-form-field>
   <span class="spacer"></span>
-  <button mat-button [matMenuTriggerFor]="userMenu">{{ userName }}</button>
+  <button mat-button [matMenuTriggerFor]="userMenu">{{ isLoggedIn ? user.name : 'Guest' }}</button>
   <mat-menu #userMenu="matMenu">
-    <button mat-menu-item>Profile</button>
-    <button mat-menu-item>Logout</button>
+    <ng-container *ngIf="isLoggedIn; else guestMenu">
+      <button mat-menu-item>Favorites</button>
+      <button mat-menu-item>Logout</button>
+      <ng-container *ngIf="isAdmin">
+        <mat-divider></mat-divider>
+        <button mat-menu-item>Create City</button>
+        <button mat-menu-item>Create Forecast</button>
+        <button mat-menu-item>Delete City</button>
+        <button mat-menu-item>Delete Forecast</button>
+      </ng-container>
+    </ng-container>
+    <ng-template #guestMenu>
+      <button mat-menu-item>Login</button>
+    </ng-template>
   </mat-menu>
 </mat-toolbar>

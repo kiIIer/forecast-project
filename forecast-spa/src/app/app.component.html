@@ -1,4 +1,4 @@
-<app-toolbar-pres [cities]="this.cities$ | async"></app-toolbar-pres>
+<app-toolbar-cont></app-toolbar-cont>
 <button mat-button (click)="this.auth?.loginWithRedirect()">Log in</button>
 <button mat-button (click)="this.auth?.logout()">Log out</button>
 <button mat-button (click)="this.store.dispatch(CityActions.startLoadCitys())">Load cities</button>
@@ -6,6 +6,6 @@
 
 
 <app-cities-pres [cities]="cities$ | async"></app-cities-pres>
-<!--<app-forecasts-pres [forecasts]="forecasts$ | async"></app-forecasts-pres>-->
+<app-forecasts-pres [forecasts]="forecasts$ | async"></app-forecasts-pres>
 <!--<app-forecast-editor-pres (submitted)="this.store.dispatch(ForecastActions.startAddForecast({forecast: $event}))"></app-forecast-editor-pres>-->
 <!--<app-forecast-details-pres></app-forecast-details-pres>-->
