@@ -20,13 +20,21 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class CitiesPresComponent {
   @Input({ transform: (value: City[] | null): City[] => value ? value : [] }) cities: City[] = [];
-  @Input() favourites: number[] = [2];
+  @Input() favourites: number[] = [];
   @Input() title = 'Cities';
 
-  @Output() public clicked = new EventEmitter<City>();
+  @Output() public cityChosen = new EventEmitter<City>();
   @Output() public toggleFavourite = new EventEmitter<City>();
 
   isFavourite(city: City): boolean {
     return this.favourites.includes(city.id);
+  }
+
+  onCityChosen(city: City) {
+    this.cityChosen.emit(city);
+  }
+
+  onToggleFavourite(city: City) {
+    this.toggleFavourite.emit(city);
   }
 }

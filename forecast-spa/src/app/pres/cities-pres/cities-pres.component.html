@@ -5,10 +5,10 @@
     </mat-card-title>
     <mat-card-content>
       <div *ngFor="let city of cities" class="city-item">
-        <button mat-button (click)="clicked.emit(city)" class="city-name-button">
+        <button mat-button (click)="onCityChosen(city)" class="city-name-button">
           {{ city.name }}
         </button>
-        <button mat-icon-button (click)="toggleFavourite.emit(city)">
+        <button mat-icon-button (click)="onToggleFavourite(city)">
           <mat-icon>{{ isFavourite(city) ? 'favorite' : 'favorite_border' }}</mat-icon>
         </button>
       </div>

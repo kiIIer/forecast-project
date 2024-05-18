@@ -1,1 +1,3 @@
-<app-cities-pres [cities]="cities$ | async"></app-cities-pres>
+<app-cities-pres [cities]="cities$ | async"
+                 (cityChosen)="onCityChosen($event)"
+                 (toggleFavourite)="onToggleFavourite($event)"></app-cities-pres>
