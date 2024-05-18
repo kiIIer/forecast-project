@@ -23,7 +23,10 @@ export class CityEffects {
   postCity$ = createEffect(() => this.actions$.pipe(
     ofType(CityActions.startAddCity),
     switchMap(({ city }) => this.cityService.postCity(city).pipe(
-      map((savedCity) => CityActions.addCity({ city: savedCity })),
+      map((savedCity) => {
+        this.popUpService.openDialog('Success', 'City added successfully', 'default');
+        return CityActions.addCity({ city: savedCity });
+      }),
       catchError(() => {
         this.popUpService.openDialog('Error', 'Failed to add city', 'error');
         return of(CityActions.addCity({ city }));
@@ -34,7 +37,10 @@ export class CityEffects {
   deleteCity$ = createEffect(() => this.actions$.pipe(
     ofType(CityActions.startDeleteCity),
     switchMap(({ id }) => this.cityService.deleteCity(id).pipe(
-      map(() => CityActions.deleteCity({ id })),
+      map(() => {
+        this.popUpService.openDialog('Success', 'City deleted successfully', 'default');
+        return CityActions.deleteCity({ id });
+      }),
       catchError(() => {
         this.popUpService.openDialog('Error', 'Failed to delete city', 'error');
         return of(CityActions.deleteCity({ id }));

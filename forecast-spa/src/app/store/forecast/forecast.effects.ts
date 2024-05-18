@@ -23,7 +23,10 @@ export class ForecastEffects {
   postForecast$ = createEffect(() => this.actions$.pipe(
     ofType(ForecastActions.startAddForecast),
     switchMap(({ forecast }) => this.forecastService.postForecast(forecast).pipe(
-      map((savedForecast) => ForecastActions.addForecast({ forecast: savedForecast })),
+      map((savedForecast) => {
+        this.popUpService.openDialog('Success', 'Forecast added successfully', 'default');
+        return ForecastActions.addForecast({ forecast: savedForecast });
+      }),
       catchError(() => {
         this.popUpService.openDialog('Error', 'Failed to add forecast', 'error');
         return of(ForecastActions.addForecast({ forecast }));
@@ -34,13 +37,17 @@ export class ForecastEffects {
   deleteForecast$ = createEffect(() => this.actions$.pipe(
     ofType(ForecastActions.startDeleteForecast),
     switchMap(({ id }) => this.forecastService.deleteForecast(id).pipe(
-      map(() => ForecastActions.deleteForecast({ id })),
+      map(() => {
+        this.popUpService.openDialog('Success', 'Forecast deleted successfully', 'default');
+        return ForecastActions.deleteForecast({ id });
+      }),
       catchError(() => {
         this.popUpService.openDialog('Error', 'Failed to delete forecast', 'error');
         return of(ForecastActions.deleteForecast({ id }));
       })
     ))
   ));
+
 
   constructor(private actions$: Actions, private popUpService: PopUpService, private forecastService: ForecastService) {
   }

@@ -39,14 +39,6 @@ export class ForecastDetailsPresComponent {
 
   @Output() jumpToEdit = new EventEmitter<Forecast>();
 
-  formatDate(date: string): string {
-    const d = new Date(date);
-    const day = String(d.getDate()).padStart(2, '0');
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const year = d.getFullYear();
-    return `${day}/${month}/${year}`;
-  }
-
   onEdit(): void {
     if (this._forecast) {
       this.jumpToEdit.emit(this._forecast);
