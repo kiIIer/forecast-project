@@ -1,3 +1,4 @@
+<app-toolbar-pres [cities]="this.cities$ | async"></app-toolbar-pres>
 <button mat-button (click)="this.auth?.loginWithRedirect()">Log in</button>
 <button mat-button (click)="this.auth?.logout()">Log out</button>
 <button mat-button (click)="this.store.dispatch(CityActions.startLoadCitys())">Load cities</button>

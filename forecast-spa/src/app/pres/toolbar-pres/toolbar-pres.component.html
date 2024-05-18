@@ -1,0 +1,19 @@
+<mat-toolbar color="primary">
+  <span>City Finder</span>
+  <span class="spacer"></span>
+  <mat-form-field class="search-field" appearance="fill">
+    <mat-icon matPrefix>search</mat-icon>
+    <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" placeholder="Search cities">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-option *ngFor="let city of filteredCities | async" [value]="city">
+        {{ city.name }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <span class="spacer"></span>
+  <button mat-button [matMenuTriggerFor]="userMenu">{{ userName }}</button>
+  <mat-menu #userMenu="matMenu">
+    <button mat-menu-item>Profile</button>
+    <button mat-menu-item>Logout</button>
+  </mat-menu>
+</mat-toolbar>
