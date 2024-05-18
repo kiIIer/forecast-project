@@ -37,7 +37,7 @@ func (repo *userRepository) AddCityToFavorites(userID string, cityID uint) error
 // GetFavoriteCities retrieves a user's favorite cities.
 func (repo *userRepository) GetFavoriteCities(userID string) ([]*models.City, error) {
 	var user models.User
-	err := repo.db.Preload("Favourites").First(&user, userID).Error
+	err := repo.db.Preload("Favourites").First(&user, "id = ?", userID).Error
 	if err != nil {
 		return nil, err
 	}

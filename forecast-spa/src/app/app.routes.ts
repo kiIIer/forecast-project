@@ -7,12 +7,13 @@ import { CityDetailsComponent } from './cont/city-details/city-details.component
 import { ForecastDetailsContComponent } from './cont/forecast-details-cont/forecast-details-cont.component';
 import { NewForecastContComponent } from './cont/new-forecast-cont/new-forecast-cont.component';
 import { NewCityContComponent } from './cont/new-city-cont/new-city-cont.component';
+import { favouritesGuard } from './guards/favouritesGuard';
 
 export const appRoutes: Route[] = [
   {
     path: 'home',
     component: HomeContComponent,
-    canActivate: [citiesGuard]
+    canActivate: [citiesGuard, favouritesGuard]
   },
   {
     path: 'forecasts',

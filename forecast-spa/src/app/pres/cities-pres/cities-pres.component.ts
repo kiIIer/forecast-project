@@ -4,6 +4,7 @@ import { JsonPipe, NgForOf, NgIf } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { Favourite } from '../../store/favourite/favourite.model';
 
 @Component({
   selector: 'app-cities-pres',
@@ -21,15 +22,24 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class CitiesPresComponent {
   @Input({ transform: (value: City[] | null): City[] => value ? value : [] }) cities: City[] = [];
-  @Input() favourites: number[] = [];
+  private _favourites: number[] = [];
+
+  @Input()
+  set favourites(value: Favourite[] | null) {
+    this._favourites = value ? value.map(favourite => favourite.id) : [];
+  }
   @Input() title = 'Cities';
   @Input({ transform: booleanAttribute }) isLoggedIn = false;
 
   @Output() public cityChosen = new EventEmitter<City>();
-  @Output() public toggleFavourite = new EventEmitter<City>();
+  @Output() public addFavourite = new EventEmitter<City>();
+  @Output() public removeFavourite = new EventEmitter<City>();
 
   isFavourite(city: City): boolean {
-    return this.favourites.includes(city.id);
+    if (!this.isLoggedIn) {
+      return false;
+    }
+    return this._favourites.includes(city.id);
   }
 
   onCityChosen(city: City) {
@@ -37,6 +47,10 @@ export class CitiesPresComponent {
   }
 
   onToggleFavourite(city: City) {
-    this.toggleFavourite.emit(city);
+    if (this.isFavourite(city)) {
+      this.removeFavourite.emit(city);
+    } else {
+      this.addFavourite.emit(city);
+    }
   }
 }

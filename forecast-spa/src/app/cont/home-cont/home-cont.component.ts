@@ -32,24 +32,11 @@ export class HomeContComponent {
     this.store.dispatch(RouterActions.navigateByUrl({ url: `/cities/${city.id}` }));
   }
 
-  onAddToFavorites(city: City) {
+  onAddFavourite(city: City) {
     this.store.dispatch(FavouriteActions.startAddFavourite({ favourite: { id: city.id } }));
   }
 
-  onRemoveFromFavorites(city: City) {
+  onRemoveFavourite(city: City) {
     this.store.dispatch(FavouriteActions.startDeleteFavourite({ id: `${city.id}` }));
-  }
-
-  onToggleFavourite(city: City) {
-    this.favourites$.pipe(
-      map(favourites => favourites.includes({ id: city.id })),
-      take(1) // Ensure we complete the observable
-    ).subscribe(isFavourite => {
-      if (isFavourite) {
-        this.onRemoveFromFavorites(city);
-      } else {
-        this.onAddToFavorites(city);
-      }
-    });
   }
 }
