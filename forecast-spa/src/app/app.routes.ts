@@ -9,6 +9,7 @@ import { NewForecastContComponent } from './cont/new-forecast-cont/new-forecast-
 import { NewCityContComponent } from './cont/new-city-cont/new-city-cont.component';
 import { favouritesGuard } from './guards/favouritesGuard';
 import { DeleteCityContComponent } from './cont/delete-city-cont/delete-city-cont.component';
+import { DeleteForecastContComponent } from './cont/delete-forecast-cont/delete-forecast-cont.component';
 
 export const appRoutes: Route[] = [
   {
@@ -23,12 +24,11 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'cities/create',
-    component: NewCityContComponent,
-    canActivate: [citiesGuard]
+    component: NewCityContComponent
   },
   {
     path: 'cities/delete',
-    component: DeleteCityContComponent,
+    component: DeleteCityContComponent
   },
   {
     path: 'cities/:city_id',
@@ -38,6 +38,10 @@ export const appRoutes: Route[] = [
   {
     path: 'forecasts/create',
     component: NewForecastContComponent
+  },
+  {
+    path: 'forecasts/delete',
+    component: DeleteForecastContComponent
   },
   {
     path: 'forecasts/:forecast_id',
