@@ -45,6 +45,7 @@ export class ToolbarPresComponent {
 
   @Output() cityChosen = new EventEmitter<City>();
   @Output() favouritesClicked = new EventEmitter<void>();
+  @Output() notificationsClicked = new EventEmitter<void>();
   @Output() loginClicked = new EventEmitter<void>();
   @Output() logoutClicked = new EventEmitter<void>();
   @Output() adminCreateCity = new EventEmitter<void>();
@@ -85,6 +86,10 @@ export class ToolbarPresComponent {
 
   onFavouritesClicked(): void {
     this.favouritesClicked.emit();
+  }
+
+  onNotificationsClicked(): void {
+    this.notificationsClicked.emit();
   }
 
   onLoginClicked(): void {

@@ -37,6 +37,10 @@ export class ToolbarContComponent {
     this.store.dispatch(RouterActions.navigateByUrl({ url: '/favourites' }));
   }
 
+  onNotificationsClicked(): void {
+    this.store.dispatch(RouterActions.navigateByUrl({ url: '/notifications' }));
+  }
+
   onLoginClicked(): void {
     this.store.dispatch(AuthActions.login());
   }

@@ -13,6 +13,8 @@ import { DeleteForecastContComponent } from './cont/delete-forecast-cont/delete-
 import { adminGuard } from './guards/admin.guard';
 import { FavouritesContComponent } from './cont/favourites-cont/favourites-cont.component';
 import { authGuard } from './guards/auth.guard';
+import { NotificationsContComponent } from './cont/notifications-cont/notifications-cont.component';
+import { notificationsGuard } from './guards/notifications.guard';
 
 export const appRoutes: Route[] = [
   {
@@ -29,6 +31,11 @@ export const appRoutes: Route[] = [
     path: 'favourites',
     component: FavouritesContComponent,
     canActivate: [authGuard, citiesGuard, favouritesGuard]
+  },
+  {
+    path: 'notifications',
+    component: NotificationsContComponent,
+    canActivate: [authGuard, notificationsGuard, forecastsGuard]
   },
   {
     path: 'cities/create',

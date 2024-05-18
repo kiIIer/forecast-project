@@ -15,6 +15,7 @@
   <mat-menu #userMenu="matMenu">
     <ng-container *ngIf="isLoggedIn; else guestMenu">
       <button mat-menu-item (click)="onFavouritesClicked()">Favorites</button>
+      <button mat-menu-item (click)="onNotificationsClicked()">Notifications</button>
       <button mat-menu-item (click)="onLogoutClicked()">Logout</button>
       <ng-container *ngIf="isAdmin">
         <mat-divider></mat-divider>

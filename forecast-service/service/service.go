@@ -45,7 +45,7 @@ func (fs *forecastService) Run() {
 	router.Handle("/favourites", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.citiesHandler.FavouritesGet))).Methods(http.MethodGet)
 	router.Handle("/favourites", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.citiesHandler.FavouritesPost))).Methods(http.MethodPost)
 	router.Handle("/favourites/{id}", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.citiesHandler.FavouritesIdDelete))).Methods(http.MethodDelete)
-	router.Handle("/forecasts/upcoming", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.forecastsHandler.UpcomingForecastsGet))).Methods(http.MethodGet)
+	router.Handle("/upcoming-forecasts", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.forecastsHandler.UpcomingForecastsGet))).Methods(http.MethodGet)
 
 	// Admin routes (Require Admin Authorization)
 	//router.Handle("/cities", fs.middleware.CheckAuthenticated(fs.middleware.CheckAdmin(http.HandlerFunc(fs.citiesHandler.CitiesPost)))).Methods(http.MethodPost)

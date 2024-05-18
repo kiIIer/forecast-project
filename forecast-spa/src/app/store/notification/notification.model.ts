@@ -1,3 +1,3 @@
 export interface Notification {
-  id: string;
+  id: number;
 }
