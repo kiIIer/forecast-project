@@ -1,0 +1,30 @@
+import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot } from '@angular/router';
+import { catchError, combineLatest, filter, map, Observable, of, switchMap, take } from 'rxjs';
+import { selectIsAdmin, selectIsLoggedIn, selectLoaded } from '../store/auth/auth.reducer';
+import { Store } from '@ngrx/store';
+import { inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+
+export const adminGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> => {
+  const store = inject(Store);
+
+  const platformId = inject(PLATFORM_ID);
+
+  if (!isPlatformBrowser(platformId)) {
+    return of(false);
+  }
+
+  return store.select(selectLoaded).pipe(
+    filter(loaded => loaded), // Wait until the loaded state is true
+    take(1), // Take the first emitted value that satisfies the filter
+    switchMap(() =>
+      combineLatest([
+        store.select(selectIsLoggedIn),
+        store.select(selectIsAdmin)
+      ]).pipe(
+        map(([isLoggedIn, isAdmin]) => isLoggedIn && isAdmin),
+        catchError(() => of(false))
+      )
+    )
+  );
+};

@@ -7,12 +7,14 @@ export interface AuthState {
   userProfile: any;
   isLoggedIn: boolean;
   isAdmin: boolean;
+  loaded: boolean;
 }
 
 export const initialState: AuthState = {
   userProfile: null,
   isLoggedIn: false,
-  isAdmin: false
+  isAdmin: false,
+  loaded: false
 };
 
 export const authReducer = createReducer(
@@ -21,9 +23,17 @@ export const authReducer = createReducer(
     ...state,
     userProfile: user,
     isLoggedIn,
-    isAdmin
+    isAdmin,
+    loaded: true
   })),
-  on(AuthActions.logoutComplete, (state) => ({ ...state, userProfile: null, isLoggedIn: false, isAdmin: false }))
+  on(AuthActions.logoutComplete, (state) => ({
+    ...state,
+    userProfile: null,
+    isLoggedIn: false,
+    isAdmin: false,
+    loaded: true
+  })),
+  on(AuthActions.checked, (state) => ({ ...state, loaded: true }))
 );
 
 const authSelector = createFeatureSelector<AuthState>(authFeatureKey);
@@ -31,3 +41,4 @@ const authSelector = createFeatureSelector<AuthState>(authFeatureKey);
 export const selectUserProfile = createSelector(authSelector, state => state.userProfile);
 export const selectIsLoggedIn = createSelector(authSelector, state => state.isLoggedIn);
 export const selectIsAdmin = createSelector(authSelector, state => state.isAdmin);
+export const selectLoaded = createSelector(authSelector, state => state.loaded);
