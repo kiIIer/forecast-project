@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { booleanAttribute, Component, EventEmitter, Input, Output } from '@angular/core';
 import { City } from '../../store/city/city.model';
-import { JsonPipe, NgForOf } from '@angular/common';
+import { JsonPipe, NgForOf, NgIf } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,7 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatCardModule,
     MatButtonModule,
     MatIconModule,
-    NgForOf
+    NgForOf,
+    NgIf
   ],
   templateUrl: './cities-pres.component.html',
   styleUrls: ['./cities-pres.component.css']
@@ -22,6 +23,7 @@ export class CitiesPresComponent {
   @Input({ transform: (value: City[] | null): City[] => value ? value : [] }) cities: City[] = [];
   @Input() favourites: number[] = [];
   @Input() title = 'Cities';
+  @Input({ transform: booleanAttribute }) isLoggedIn = false;
 
   @Output() public cityChosen = new EventEmitter<City>();
   @Output() public toggleFavourite = new EventEmitter<City>();

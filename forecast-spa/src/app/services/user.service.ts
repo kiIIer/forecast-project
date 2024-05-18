@@ -19,14 +19,14 @@ export class UserService {
   }
 
   loadFavourites(): Observable<Favourite[]> {
-    return this.http.get<Favourite[]>(`${this.endpoint}/favorites`);
+    return this.http.get<Favourite[]>(`${this.endpoint}/favourites`);
   }
 
   postFavorite(favourite: Favourite): Observable<Favourite> {
-    return this.http.post<Favourite>(`${this.endpoint}/favorites`, favourite);
+    return this.http.post<Favourite>(`${this.endpoint}/favourites`, favourite);
   }
 
   deleteFavorite(id: string): Observable<Favourite> {
-    return this.http.delete<Favourite>(`${this.endpoint}/favorites/${id}`);
+    return this.http.delete<Favourite>(`${this.endpoint}/favourites/${id}`);
   }
 }

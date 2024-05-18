@@ -8,7 +8,7 @@
         <button mat-button (click)="onCityChosen(city)" class="city-name-button">
           {{ city.name }}
         </button>
-        <button mat-icon-button (click)="onToggleFavourite(city)">
+        <button *ngIf="isLoggedIn" mat-icon-button (click)="onToggleFavourite(city)">
           <mat-icon>{{ isFavourite(city) ? 'favorite' : 'favorite_border' }}</mat-icon>
         </button>
       </div>

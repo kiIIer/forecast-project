@@ -1,3 +1,3 @@
 export interface Favourite {
-  id: string;
+  id: number;
 }

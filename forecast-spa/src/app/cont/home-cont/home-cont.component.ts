@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
 import { CitiesPresComponent } from '../../pres/cities-pres/cities-pres.component';
 import { Store } from '@ngrx/store';
-import { selectAll } from '../../store/city/city.reducer';
+import { selectAll as selectAllCities } from '../../store/city/city.reducer';
 import { AsyncPipe } from '@angular/common';
 import { RouterActions } from '../../store/router/router.actions';
 import { City } from '../../store/city/city.model';
+import { FavouriteActions } from '../../store/favourite/favourite.actions';
+import { selectAll as selectAllFavourites } from '../../store/favourite/favourite.reducer';
+import { map, take } from 'rxjs';
+import { selectIsLoggedIn } from '../../store/auth/auth.reducer';
 
 @Component({
   selector: 'app-home-cont',
@@ -17,7 +21,9 @@ import { City } from '../../store/city/city.model';
   styleUrl: './home-cont.component.css'
 })
 export class HomeContComponent {
-  cities$ = this.store.select(selectAll);
+  cities$ = this.store.select(selectAllCities);
+  favourites$ = this.store.select(selectAllFavourites);
+  isLoggedIn$ = this.store.select(selectIsLoggedIn);
 
   constructor(private store: Store) {
   }
@@ -26,7 +32,24 @@ export class HomeContComponent {
     this.store.dispatch(RouterActions.navigateByUrl({ url: `/cities/${city.id}` }));
   }
 
+  onAddToFavorites(city: City) {
+    this.store.dispatch(FavouriteActions.startAddFavourite({ favourite: { id: city.id } }));
+  }
+
+  onRemoveFromFavorites(city: City) {
+    this.store.dispatch(FavouriteActions.startDeleteFavourite({ id: `${city.id}` }));
+  }
+
   onToggleFavourite(city: City) {
-    // this.store.dispatch(CityActions.toggleFavourite({ city }));
+    this.favourites$.pipe(
+      map(favourites => favourites.includes({ id: city.id })),
+      take(1) // Ensure we complete the observable
+    ).subscribe(isFavourite => {
+      if (isFavourite) {
+        this.onRemoveFromFavorites(city);
+      } else {
+        this.onAddToFavorites(city);
+      }
+    });
   }
 }

@@ -1,3 +1,4 @@
 <app-cities-pres [cities]="cities$ | async"
+                 [isLoggedIn]="isLoggedIn$ | async"
                  (cityChosen)="onCityChosen($event)"
                  (toggleFavourite)="onToggleFavourite($event)"></app-cities-pres>

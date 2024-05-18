@@ -1,13 +1,12 @@
 .card-container {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     height: 100vh;
-    padding-top: 20px;
 }
 
 mat-card {
-    width: 400px;
+    width: 300px;
 }
 
 mat-card-title {
@@ -16,17 +15,18 @@ mat-card-title {
     font-weight: bold;
 }
 
-.city-item {
+mat-card-content {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 10px;
-    margin-bottom: 10px;
 }
 
-.city-name-button {
-    flex-grow: 1; /* Make the button take up all the available space */
-    text-align: left; /* Align text to the left */
-    white-space: nowrap; /* Prevent text from wrapping */
-    overflow: hidden; /* Hide overflow text */
-    text-overflow: ellipsis; /* Add ellipsis for overflow text */
+.city-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+button.city-name-button {
+    text-align: left;
 }

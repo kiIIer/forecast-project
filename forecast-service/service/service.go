@@ -42,9 +42,9 @@ func (fs *forecastService) Run() {
 	router.HandleFunc("/forecasts/{id}", fs.forecastsHandler.ForecastsIdGet).Methods(http.MethodGet)
 
 	// Protected routes (Require Authentication)
-	router.Handle("/cities/favourites", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.citiesHandler.FavouritesGet))).Methods(http.MethodGet)
-	router.Handle("/cities/favourites", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.citiesHandler.FavouritesPost))).Methods(http.MethodPost)
-	router.Handle("/cities/favourites/{id}", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.citiesHandler.FavouritesIdDelete))).Methods(http.MethodDelete)
+	router.Handle("/favourites", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.citiesHandler.FavouritesGet))).Methods(http.MethodGet)
+	router.Handle("/favourites", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.citiesHandler.FavouritesPost))).Methods(http.MethodPost)
+	router.Handle("/favourites/{id}", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.citiesHandler.FavouritesIdDelete))).Methods(http.MethodDelete)
 	router.Handle("/forecasts/upcoming", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.forecastsHandler.UpcomingForecastsGet))).Methods(http.MethodGet)
 
 	// Admin routes (Require Admin Authorization)
