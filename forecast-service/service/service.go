@@ -3,6 +3,7 @@ package service
 import (
 	"forecast-service/service/config"
 	"forecast-service/service/repository/middleware"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -41,10 +42,10 @@ func (fs *forecastService) Run() {
 	router.HandleFunc("/forecasts/{id}", fs.forecastsHandler.ForecastsIdGet).Methods(http.MethodGet)
 
 	// Protected routes (Require Authentication)
-	router.Handle("/cities/favourites", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.citiesHandler.FavouritesGet))).Methods(http.MethodGet)
-	router.Handle("/cities/favourites", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.citiesHandler.FavouritesPost))).Methods(http.MethodPost)
-	router.Handle("/cities/favourites/{id}", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.citiesHandler.FavouritesIdDelete))).Methods(http.MethodDelete)
-	router.Handle("/forecasts/upcoming", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.forecastsHandler.UpcomingForecastsGet))).Methods(http.MethodGet)
+	router.Handle("/favourites", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.citiesHandler.FavouritesGet))).Methods(http.MethodGet)
+	router.Handle("/favourites", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.citiesHandler.FavouritesPost))).Methods(http.MethodPost)
+	router.Handle("/favourites/{id}", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.citiesHandler.FavouritesIdDelete))).Methods(http.MethodDelete)
+	router.Handle("/upcoming-forecasts", fs.middleware.CheckAuthenticated(http.HandlerFunc(fs.forecastsHandler.UpcomingForecastsGet))).Methods(http.MethodGet)
 
 	// Admin routes (Require Admin Authorization)
 	//router.Handle("/cities", fs.middleware.CheckAuthenticated(fs.middleware.CheckAdmin(http.HandlerFunc(fs.citiesHandler.CitiesPost)))).Methods(http.MethodPost)
@@ -53,8 +54,17 @@ func (fs *forecastService) Run() {
 	router.Handle("/forecasts", fs.middleware.CheckAuthenticated(fs.middleware.CheckAdmin(http.HandlerFunc(fs.forecastsHandler.ForecastsPost)))).Methods(http.MethodPost)
 	router.Handle("/forecasts/{id}", fs.middleware.CheckAuthenticated(fs.middleware.CheckAdmin(http.HandlerFunc(fs.forecastsHandler.ForecastsIdDelete)))).Methods(http.MethodDelete)
 
+	corsOptions := handlers.CORS(
+		handlers.AllowedOrigins([]string{"http://localhost:4200"}),
+		handlers.AllowedMethods([]string{"GET", "POST", "DELETE", "PUT", "OPTIONS"}),
+		handlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
+	)
+
+	// Wrap the router with the CORS middleware
+	corsRouter := corsOptions(router)
+
 	log.Println("Server starting on :8080")
-	if err := http.ListenAndServe(":8080", router); err != nil {
+	if err := http.ListenAndServe(":8080", corsRouter); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }

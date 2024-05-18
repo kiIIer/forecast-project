@@ -1,0 +1,32 @@
+<mat-toolbar color="primary">
+  <button mat-button (click)="onHomeClicked()">Forecast Project</button>
+  <span class="spacer"></span>
+  <mat-form-field class="search-field" appearance="fill">
+    <mat-icon matPrefix>search</mat-icon>
+    <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto" placeholder="Search cities">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-option *ngFor="let city of filteredCities | async" [value]="city" (onSelectionChange)="onCitySelected(city)">
+        {{ city.name }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <span class="spacer"></span>
+  <button mat-button [matMenuTriggerFor]="userMenu">{{ isLoggedIn ? user.name : 'Guest' }}</button>
+  <mat-menu #userMenu="matMenu">
+    <ng-container *ngIf="isLoggedIn; else guestMenu">
+      <button mat-menu-item (click)="onFavouritesClicked()">Favorites</button>
+      <button mat-menu-item (click)="onNotificationsClicked()">Notifications</button>
+      <button mat-menu-item (click)="onLogoutClicked()">Logout</button>
+      <ng-container *ngIf="isAdmin">
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="onAdminCreateCity()">Create City</button>
+        <button mat-menu-item (click)="onAdminCreateForecast()">Create Forecast</button>
+        <button mat-menu-item (click)="onAdminDeleteCity()">Delete City</button>
+        <button mat-menu-item (click)="onAdminDeleteForecast()">Delete Forecast</button>
+      </ng-container>
+    </ng-container>
+    <ng-template #guestMenu>
+      <button mat-menu-item (click)="onLoginClicked()">Login</button>
+    </ng-template>
+  </mat-menu>
+</mat-toolbar>

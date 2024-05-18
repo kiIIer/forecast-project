@@ -1,0 +1,32 @@
+<div class="card-container">
+  <mat-card>
+    <mat-card-title>
+      {{ forecast ? 'Edit Forecast' : 'New Forecast' }}
+    </mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="forecastForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill">
+          <mat-label>City ID</mat-label>
+          <input matInput type="number" formControlName="cityId">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Date of Forecast</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="dateOfForecast">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Temperature</mat-label>
+          <input matInput type="number" formControlName="temperature">
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Chance of Rain (%)</mat-label>
+          <input matInput type="number" formControlName="chanceOfRain">
+        </mat-form-field>
+        <div class="button-container">
+          <button mat-raised-button color="primary" type="submit">Submit</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

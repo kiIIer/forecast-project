@@ -1,0 +1,32 @@
+.card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+mat-card {
+    width: 300px;
+}
+
+mat-card-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+mat-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.city-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+button.city-name-button {
+    text-align: left;
+}

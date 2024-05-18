@@ -1,0 +1,4 @@
+<app-forecasts-pres
+  [forecasts]="forecasts$ | async"
+  [title]="'Notifications'"
+  (forecastChosen)="onForecastChosen($event)"></app-forecasts-pres>

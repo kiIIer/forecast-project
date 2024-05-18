@@ -37,7 +37,7 @@ func (repo *userRepository) AddCityToFavorites(userID string, cityID uint) error
 // GetFavoriteCities retrieves a user's favorite cities.
 func (repo *userRepository) GetFavoriteCities(userID string) ([]*models.City, error) {
 	var user models.User
-	err := repo.db.Preload("Favourites").First(&user, userID).Error
+	err := repo.db.Preload("Favourites").First(&user, "id = ?", userID).Error
 	if err != nil {
 		return nil, err
 	}
@@ -57,12 +57,15 @@ func (repo *userRepository) RemoveCityFromFavorites(userID string, cityID uint) 
 func (repo *userRepository) GetUpcomingForecastsFromFavorites(userID string) ([]*models.Forecast, error) {
 	var forecasts []*models.Forecast
 
+	// Format the current time to match the database date format
+	now := time.Now().Format("02/01/2006")
+
 	// Join user_favourites to get cities, then join forecasts to get upcoming forecasts
 	err := repo.db.Table("forecasts").
 		Select("forecasts.*").
 		Joins("join cities on cities.id = forecasts.city_id").
 		Joins("join user_favourites on user_favourites.city_id = cities.id").
-		Where("user_favourites.user_id = ? AND forecasts.date_of_forecast >= ?", userID, time.Now()).
+		Where("user_favourites.user_id = ? AND forecasts.date_of_forecast >= ?", userID, now).
 		Scan(&forecasts).Error
 
 	return forecasts, err
