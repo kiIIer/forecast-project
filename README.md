@@ -24,7 +24,7 @@
 
 ### Діаграма прецедентів
 
-![Рисунок 1 - Діаграма прецедентів](docs/docs/assets/assets/image.png)
+![Рисунок 1 - Діаграма прецедентів](docs/assets/image.png)
 
 Код діаграми [тут](./docs/diagrams/use-cast.pumld)
 
