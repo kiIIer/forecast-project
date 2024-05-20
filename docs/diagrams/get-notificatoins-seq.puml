@@ -1,0 +1,19 @@
+@startuml
+participant User as U
+participant "Site" as S
+participant Server as SV
+participant Database as DB
+
+U -> S: Входить у свій аккаунт
+activate S
+S -> SV: Запит нотифікацій з токеном клієнта
+activate SV
+SV -> DB: Питає нотифікації
+activate DB
+DB -> SV: Відповідає з нотифікаціями
+deactivate DB
+SV -> S: Передає нотифікації
+deactivate SV
+S -> U: Показує нотифікації користувачеві
+deactivate S
+@enduml
